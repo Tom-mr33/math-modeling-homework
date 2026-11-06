@@ -1,0 +1,9 @@
+{
+  "beta1_simple": 0.9079736746861208,
+  "beta1_multiple": 2.0935617139220994,
+  "se_simple": 0.9145306406047116,
+  "se_multiple": 0.963845360731724,
+  "change": 1.1855880392359786,
+  "ovb_sample_prediction": -0.8954626904173417,
+  "theory_asymptotic": 1.25
+}
