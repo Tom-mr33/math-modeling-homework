@@ -38,6 +38,23 @@
 
 ## 提交物清单
 
-- [ ] 报告 PDF（八部分：问题与模型 / 数据生成 / 简单回归 / 多元回归 / FWL 验证 / 偏相关验证 / 讨论 / 附录）
-- [ ] 数据文件 `data/sleep_score.csv`
-- [ ] 可运行脚本 `src/`（开头设定随机种子，可复现报告中全部数值）
+- [x] 数据文件 `data/sleep_score.csv`（种子 2024，n=60）
+- [x] 可运行脚本 `src/`（`python src/main.py` 一键复现步骤 1–6，数值已验收）
+- [x] 前沿扩展 `src/advanced/`（OVB 解析验证 / CH2020 敏感性分析 / DML / R-learner / DR-learner / CausalForest / conformal / MC 估计器竞赛）
+- [x] 图表 `figures/` 9 张（plotly 交互 HTML + matplotlib PNG 双输出，`python src/plotting.py` 重新生成）
+- [x] 验收 QA `src/qa_check.py`：9/9 通过（FWL 1e-13、t 等价 1e-13、conformal 覆盖 93.5%、CH2020 恒等式 3e-13、一键复现摘要一致、pytest 7/7）
+- [ ] 报告 `report/`（八部分 + 前沿方法综述 + 附录）
+
+## 快速开始
+
+```bash
+pip install -r requirements.txt   # econml 可选（缺失自动降级）
+python src/main.py                # 步骤 1–6 流水线 → results/
+python src/advanced/ovb.py        # MC 仿真 M=500 + OVB 渐近验证
+python src/advanced/sensitivity.py # CH2020 敏感性分析
+python src/advanced/race.py       # 非线性混淆估计器竞赛 (n=600, M=60)
+python src/advanced/conformal.py  # conformal 覆盖率验证
+python src/plotting.py            # 9 张图 → figures/
+python src/qa_check.py            # 交付验收 (9 项)
+python -m pytest tests/ -v        # 单元测试 (7 项)
+```
