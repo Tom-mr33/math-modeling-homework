@@ -41,7 +41,7 @@
 - [x] 数据文件 `data/sleep_score.csv`（种子 2024，n=60）
 - [x] 可运行脚本 `src/`（`python src/main.py` 一键复现步骤 1–6，数值已验收）
 - [x] 前沿扩展 `src/advanced/`（OVB 解析验证 / CH2020 敏感性分析 / DML / R-learner / DR-learner / CausalForest / conformal / MC 估计器竞赛）
-- [x] 图表 `figures/` 9 张（plotly 交互 HTML + matplotlib PNG 双输出，`python src/plotting.py` 重新生成）
+- [x] 图表 `figures/` 9 张 PNG（`python src/plotting.py` 重新生成）
 - [x] 验收 QA `src/qa_check.py`：9/9 通过（FWL 1e-13、t 等价 1e-13、conformal 覆盖 93.5%、CH2020 恒等式 3e-13、一键复现摘要一致、pytest 7/7）
 - [ ] 报告 `report/`（八部分 + 前沿方法综述 + 附录）
 
