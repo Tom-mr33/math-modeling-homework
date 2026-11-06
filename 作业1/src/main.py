@@ -166,13 +166,21 @@ def step6_compare(cfg: Config, df: pd.DataFrame, step3_table: pd.DataFrame) -> N
     se_multi = float(step3_table.loc[step3_table["name"] == "X1", "se"].item())
 
     cov12 = df["X1"].cov(df["X2"])
+    cov13 = df["X1"].cov(df["X3"])
     var1 = df["X1"].var(ddof=1)
-    theory_bias = cfg.beta_true[1] * cov12 / var1  # OVB 渐近偏差 beta2 * cov/var
+    # OVB 渐近偏差：beta2*cov12/var1 + beta3*cov13/var1（简单回归遗漏 X2、X3 两项）
+    b2, b3 = cfg.beta_true[1], cfg.beta_true[2]
+    bias_x2 = b2 * cov12 / var1
+    bias_x3 = b3 * cov13 / var1
+    from advanced.ovb import ovb_asymptotic
+
+    plim_simple = ovb_asymptotic(cfg)
 
     print(f"  简单回归 beta1  = {beta1_simple:.4f} (SE {se_simple:.4f})")
     print(f"  多元回归 beta1  = {beta1_multi:.4f} (SE {se_multi:.4f})")
     print(f"  控制后变化      = {beta1_multi - beta1_simple:+.4f}")
-    print(f"  样本 OVB 预测   = beta2*cov(x1,x2)/var(x1) = {theory_bias:+.4f}")
+    print(f"  样本 OVB 分解   = X2项 {bias_x2:+.4f} + X3项 {bias_x3:+.4f} = {bias_x2+bias_x3:+.4f}")
+    print(f"  渐近理论 plim beta1_simple = {plim_simple:.4f}")
     save_json(
         {
             "beta1_simple": beta1_simple,
@@ -180,8 +188,10 @@ def step6_compare(cfg: Config, df: pd.DataFrame, step3_table: pd.DataFrame) -> N
             "se_simple": se_simple,
             "se_multiple": se_multi,
             "change": beta1_multi - beta1_simple,
-            "ovb_sample_prediction": theory_bias,
-            "theory_asymptotic": 1.25,
+            "ovb_sample_bias_x2": bias_x2,
+            "ovb_sample_bias_x3": bias_x3,
+            "ovb_sample_bias_total": bias_x2 + bias_x3,
+            "theory_plim_simple": plim_simple,
         },
         "step6_compare.json",
     )
