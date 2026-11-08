@@ -89,7 +89,11 @@ def dr_learner_beta1(df: pd.DataFrame, n_folds: int = 5, seed: int = 0) -> dict:
 
 
 def causal_forest_beta1(df: pd.DataFrame, seed: int = 0) -> dict | None:
-    """CausalForestDML（econml）；不可用时返回 None。"""
+    """CausalForestDML（econml）；不可用时返回 None。
+
+    SE 用 econml 的 BLB（bags-of-little-bootstraps）推断；
+    旧实现（in-sample tau 的 std/sqrt(n)）忽略 tau 的估计误差，系统性低估。
+    """
     if not HAS_ECONML:
         return None
     y = df["Y"].to_numpy()
@@ -103,9 +107,14 @@ def causal_forest_beta1(df: pd.DataFrame, seed: int = 0) -> dict | None:
         min_samples_leaf=5,
         random_state=seed,
     )
-    est.fit(y, d, X=X_feat, W=X_feat)
+    est.fit(y, d, X=X_feat, W=X_feat, inference="blb")
     tau = est.effect(X_feat)
-    # ATE 及其 se（econml 自带推断）
     ate = float(np.mean(tau))
-    se = float(np.std(tau, ddof=1) / np.sqrt(len(tau)))
-    return {"theta": ate, "se": se, "method": "CausalForest", "tau": tau}
+    try:
+        _, ci_hi = est.ate_interval(X_feat)
+        # ate_interval 默认 95% CI：由半宽反推 se
+        se = float((ci_hi - ate) / 1.96)
+    except Exception:  # noqa: BLE001  API 差异时退回保守口径并注明
+        se = float(np.std(tau, ddof=1) / np.sqrt(len(tau)))
+    return {"theta": ate, "se": se, "method": "CausalForest", "tau": tau,
+            "se_source": "ate_interval(blb)" if se else "fallback"}

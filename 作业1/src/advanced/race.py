@@ -149,7 +149,7 @@ def run_race(cfg: Config | None = None, mc_reps: int = 60, race_n: int = 600) ->
         print(
             f"  {m:<22}{mc[m]['mean']:>10.4f}{mc[m]['mc_se']:>9.4f}{mc[m]['bias']:>10.4f}"
         )
-    print("  单次展示表（种子 2024）:")
+    print("  单次展示表（独立种子 20240601）:")
     for row in single:
         se = f"{row['se']:.3f}" if row["se"] is not None else "  -"
         print(f"    {row['method']:<22}{row['theta']:>10.4f}{se:>8}")

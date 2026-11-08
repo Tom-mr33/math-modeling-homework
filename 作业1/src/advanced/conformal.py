@@ -35,9 +35,8 @@ def split_conformal_interval(
     fit_idx, cal_idx = idx[:n_fit], idx[n_fit:]
 
     res = ols_fit(y[fit_idx], X[fit_idx], add_intercept=True)
-    cal_pred = ols_fit(y[fit_idx], X[fit_idx], add_intercept=True).fitted
-    # 校准残差（在拟合折内模型拟合，残差应在校准折上评估）
     beta = res.beta
+    # 校准残差：模型在拟合折上估计，残差必须在未参与拟合的校准折上计算
     cal_resid = np.abs(y[cal_idx] - np.column_stack([np.ones(len(cal_idx)), X[cal_idx]]) @ beta)
 
     n_cal = len(cal_idx)

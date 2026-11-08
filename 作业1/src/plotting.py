@@ -102,11 +102,15 @@ def fig4_coef_comparison() -> None:
     s2 = json.loads((RESULTS_DIR / "step2_simple.json").read_text(encoding="utf-8"))
     s3 = json.loads((RESULTS_DIR / "step3_multiple.json").read_text(encoding="utf-8"))
     s4 = json.loads((RESULTS_DIR / "step4_fwl.json").read_text(encoding="utf-8"))
+    tab2 = pd.read_csv(RESULTS_DIR / "step2_simple.csv")
+    tab3 = pd.read_csv(RESULTS_DIR / "step3_multiple.csv")
+    se_simple = float(tab2.loc[tab2["name"] == "x", "se"].item())
+    se_multi = float(tab3.loc[tab3["name"] == "X1", "se"].item())
     names = ["简单回归", "多元回归", "FWL 残差化"]
     betas = [s2["beta1_simple"], s3["beta1_multiple"], s4["beta1_fwl"]]
-    ses = [0.9145, 0.9638, None]
+    ses = [se_simple, se_multi, None]
     fig_mpl, ax = plt.subplots(figsize=(8, 5))
-    ax.axhspan(2 - 0.96, 2 + 0.96, color=GREEN, alpha=0.10, label="真值 2 ± 1 个多元SE")
+    ax.axhspan(2 - se_multi, 2 + se_multi, color=GREEN, alpha=0.10, label="真值 2 ± 1 个多元SE")
     ax.axhline(2, color=GREEN, lw=1.5, ls="--", label="真值 β1 = 2")
     for i, (nm, b) in enumerate(zip(names, betas)):
         ax.scatter(i, b, s=90, color=[RED, BLUE, BLUE][i], zorder=3)

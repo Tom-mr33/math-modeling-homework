@@ -33,7 +33,9 @@ class OLSResult:
 
     @property
     def r_squared(self) -> float:
-        y_bar = self.fitted.mean()  # 当含截距时 resid 均值为 0，fitted.mean() == y.mean()
+        """中心化 R²（ESS/TSS 分解）。仅对含截距的拟合有意义；
+        本仓库所有 R² 调用均在 add_intercept=True 的模型上。"""
+        y_bar = float(np.mean(self.fitted))  # 含截距时 fitted.mean() == y.mean()
         tss = float(((self.fitted - y_bar) ** 2).sum() + self.rss)
         return 1.0 - self.rss / tss
 
