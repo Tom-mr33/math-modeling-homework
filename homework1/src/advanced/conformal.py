@@ -16,7 +16,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from config import RESULTS_DIR, Config, ensure_dirs, rng_for  # noqa: E402
+from config import R_CONFORMAL, Config, ensure_dirs, rng_for  # noqa: E402
 from datagen import generate_dataset  # noqa: E402
 from ols import ols_fit  # noqa: E402
 
@@ -92,7 +92,7 @@ def run_conformal(cfg: Config, alpha: float = 0.10, reps: int = 200) -> dict:
         "coverage_ok": bool(coverages_arr.mean() >= 1 - alpha - 0.02),
         "example": example,
     }
-    out = RESULTS_DIR / "conformal.json"
+    out = R_CONFORMAL / "conformal.json"
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(
         f"[Conformal] 名义 {1-alpha:.0%}, 经验覆盖 {payload['mean_coverage']:.3f}"

@@ -6,7 +6,7 @@
 
 | 作业 | 主题 | 状态 |
 | ---- | ---- | ---- |
-| [作业1](./作业1/) | 多元线性回归中"控制变量"的数学推证与随机仿真练习（FWL 定理验证） | 进行中 |
+| [作业1](./homework1/) | 多元线性回归中"控制变量"的数学推证与随机仿真练习（FWL 定理验证） | 进行中 |
 
 ## 作业1：控制变量的数学推证与随机仿真
 
@@ -22,15 +22,15 @@
 3. 对比验证：简单回归 vs 多元回归 vs FWL 残差化回归，验证 $\hat\beta_1$ 数值一致（误差 < 1e-8）
 4. （加分项）M = 500 次重复仿真，展示两种估计量的抽样分布
 
-详见 [作业1/README.md](./作业1/README.md)。
+详见 [homework1/README.md](./homework1/README.md)。
 
 ## 环境依赖
 
 - Python 3.10+
-- NumPy、pandas、SciPy、statsmodels、matplotlib
+- NumPy、pandas、SciPy、statsmodels、scikit-learn（econml 可选）
 
 ```bash
-pip install -r 作业1/requirements.txt
+pip install -r homework1/requirements.txt
 ```
 
 ## 目录结构
@@ -39,19 +39,17 @@ pip install -r 作业1/requirements.txt
 数学模型作业/
 ├── README.md            # 本文件
 ├── LICENSE              # MIT License
-└── 作业1/
+└── homework1/
     ├── 2026-11-习题.pdf  # 作业要求原文
     ├── README.md         # 作业1说明与进度
+    ├── 方案设计.md        # 技术方案文档
     ├── requirements.txt  # Python 依赖
     ├── src/              # 仿真与回归代码
-    ├── data/             # sleep_score.csv（种子生成，入库）
     ├── tests/            # 数值互验测试
-    ├── results/          # 数值结果落盘（json/csv，入库）
-    ├── figures/          # 图表 PNG（本地生成，不入库）
-    └── report/           # 实验报告（本地撰写，不入库）
+    ├── data/             # sleep_score.csv（种子生成）
+    ├── results/          # 数值结果落盘（baseline/mc/sensitivity/race/conformal 分类）
+    └── report/           # 实验报告（本地产物，不入库）
 ```
-
-> 报告与图表为本地运行产物（`python src/plotting.py` / `report/实验报告.md`），已加入 `.gitignore`，不在仓库中维护。
 
 ## License
 

@@ -16,7 +16,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from config import RESULTS_DIR, Config, ensure_dirs, rng_for  # noqa: E402
+from config import R_MC, Config, ensure_dirs, rng_for  # noqa: E402
 from datagen import generate_dataset  # noqa: E402
 from simulation import beta1_multiple, beta1_simple, run_mc  # noqa: E402
 
@@ -64,10 +64,10 @@ def verify_ovb(cfg: Config | None = None, reps: int | None = None) -> dict:
 
     # 抽样分布样本落盘（供直方图绘图）
     np.save(
-        RESULTS_DIR / "mc_samples.npy",
+        R_MC / "mc_samples.npy",
         np.column_stack([res_simple["samples"], res_multi["samples"]]),
     )
-    out = RESULTS_DIR / "ovb_mc.json"
+    out = R_MC / "ovb_mc.json"
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(f"[OVB] 渐近理论 beta1_simple -> {theory:.4f}")

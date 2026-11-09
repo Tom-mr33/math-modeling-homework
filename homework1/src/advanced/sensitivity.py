@@ -25,7 +25,7 @@ from scipy import optimize, stats
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from config import RESULTS_DIR, Config, ensure_dirs  # noqa: E402
+from config import R_SENSITIVITY, Config, ensure_dirs  # noqa: E402
 from ols import ols_fit  # noqa: E402
 
 
@@ -165,8 +165,8 @@ def run_sensitivity(cfg: Config, df: pd.DataFrame) -> dict:
     # 等高线网格
     grid = np.linspace(0.0, 0.95, 60)
     T = sensitivity_grid(t0, n, cfg.k, grid, grid)
-    np.save(RESULTS_DIR / "sensitivity_grid.npy", T)
-    np.save(RESULTS_DIR / "sensitivity_grid_axis.npy", grid)
+    np.save(R_SENSITIVITY / "sensitivity_grid.npy", T)
+    np.save(R_SENSITIVITY / "sensitivity_grid_axis.npy", grid)
 
     validation = validate_with_known_confounder(cfg, df)
 
@@ -178,7 +178,7 @@ def run_sensitivity(cfg: Config, df: pd.DataFrame) -> dict:
         "rv_significance": rv["rv_significance"],
         "validation_drop_x3": validation,
     }
-    out = RESULTS_DIR / "sensitivity.json"
+    out = R_SENSITIVITY / "sensitivity.json"
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(f"[CH2020] beta1 = {beta1:.4f}, t0 = {t0:.4f}, t_crit = {t_crit:.4f}")

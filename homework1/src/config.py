@@ -14,13 +14,19 @@ import numpy as np
 # 项目根 = src/ 的上一级（作业1/），全 pathlib 解析，规避中文用户名编码问题
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
-FIGURES_DIR = ROOT / "figures"
 RESULTS_DIR = ROOT / "results"
 REPORT_DIR = ROOT / "report"
 
+# results/ 分类子目录：基础流水线 / 蒙特卡洛 / 敏感性 / 估计器竞赛 / conformal
+R_BASELINE = RESULTS_DIR / "baseline"      # main.py 步骤 1–6
+R_MC = RESULTS_DIR / "mc"                  # ovb.py：M=500 抽样分布与 OVB 验证
+R_SENSITIVITY = RESULTS_DIR / "sensitivity"  # CH2020 敏感性分析
+R_RACE = RESULTS_DIR / "race"              # 非线性混淆估计器竞赛
+R_CONFORMAL = RESULTS_DIR / "conformal"    # 分裂 conformal 覆盖率
+
 
 def ensure_dirs() -> None:
-    for d in (DATA_DIR, FIGURES_DIR, RESULTS_DIR, REPORT_DIR):
+    for d in (DATA_DIR, REPORT_DIR, R_BASELINE, R_MC, R_SENSITIVITY, R_RACE, R_CONFORMAL):
         d.mkdir(parents=True, exist_ok=True)
 
 

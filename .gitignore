@@ -11,13 +11,14 @@ venv/
 .RData
 .Rproj.user/
 
-# 运行产物（数据与图表按需提交，中间产物忽略）
+# 运行产物
 *.log
 *.tmp
 
-# 报告与图表：本地产物，不入库
-作业1/report/
-作业1/figures/
+# 报告、图表与数值结果：本地产物，不入库
+homework1/report/
+homework1/figures/
+homework1/results/
 
 # 系统
 Thumbs.db

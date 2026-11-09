@@ -34,7 +34,7 @@ from advanced.meta_learners import (  # noqa: E402
     dr_learner_beta1,
     r_learner_beta1,
 )
-from config import RESULTS_DIR, Config, ensure_dirs, rng_for  # noqa: E402
+from config import R_RACE, Config, ensure_dirs, rng_for  # noqa: E402
 from datagen import generate_nonlinear_dataset  # noqa: E402
 from ols import ols_fit  # noqa: E402
 
@@ -139,7 +139,7 @@ def run_race(cfg: Config | None = None, mc_reps: int = 60, race_n: int = 600) ->
         "single_draw": single,
         "note": "常数效应下 R-learner/DR-learner 点估计与 DML-RF 恒等（同一 Robinson 闭式）；n=60 下各 ML 方法方差过大，竞赛在 n=600 下进行",
     }
-    out = RESULTS_DIR / "race.json"
+    out = R_RACE / "race.json"
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(f"[Race] 右偏混淆 Y = 60 + 2·X1 + 1.5·X2² − X3 + ε (n={race_n})")

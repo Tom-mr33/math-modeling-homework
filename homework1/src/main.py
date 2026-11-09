@@ -13,18 +13,18 @@ import json
 import numpy as np
 import pandas as pd
 
-from config import RESULTS_DIR, Config, ensure_dirs, rng_for
+from config import R_BASELINE, Config, ensure_dirs, rng_for
 from datagen import load_main_dataset
 from inference import coefficient_table, simple_regression_summary
 from ols import fwl_beta1, ols_fit, partial_correlation, t_from_partial_r2
 
 
 def save_json(obj: dict, name: str) -> None:
-    path = RESULTS_DIR / name
+    path = R_BASELINE / name
     path.write_text(
         json.dumps(obj, ensure_ascii=False, indent=2, default=float), encoding="utf-8"
     )
-    print(f"  -> {path.relative_to(RESULTS_DIR.parent)}")
+    print(f"  -> {path.relative_to(R_BASELINE.parent)}")
 
 
 def step1_describe(cfg: Config, df: pd.DataFrame) -> None:
@@ -44,7 +44,7 @@ def step1_describe(cfg: Config, df: pd.DataFrame) -> None:
         "r_13": corr.loc["X1", "X3"],  # 睡眠-手机
     }
     save_json(payload, "step1_describe.json")
-    corr.to_csv(RESULTS_DIR / "step1_corr.csv", encoding="utf-8")
+    corr.to_csv(R_BASELINE / "step1_corr.csv", encoding="utf-8")
 
 
 def step2_simple(cfg: Config, df: pd.DataFrame) -> None:
@@ -56,7 +56,7 @@ def step2_simple(cfg: Config, df: pd.DataFrame) -> None:
     print(table.round(4).to_string(index=False))
     beta1 = table.loc[table["name"] == "x", "beta"].item()
     print(f"  beta1_simple = {beta1:.4f}  (真值 2，预期被 X2 拉低)")
-    table.to_csv(RESULTS_DIR / "step2_simple.csv", index=False, encoding="utf-8")
+    table.to_csv(R_BASELINE / "step2_simple.csv", index=False, encoding="utf-8")
     save_json(
         {"beta1_simple": beta1, "r2": float(table.attrs["r2"])}, "step2_simple.json"
     )
@@ -77,7 +77,7 @@ def step3_multiple(cfg: Config, df: pd.DataFrame) -> pd.DataFrame:
     )
     print(table.round(4).to_string(index=False))
     print(f"  adj R2 = {res.adj_r_squared:.4f}")
-    table.to_csv(RESULTS_DIR / "step3_multiple.csv", index=False, encoding="utf-8")
+    table.to_csv(R_BASELINE / "step3_multiple.csv", index=False, encoding="utf-8")
     beta1 = table.loc[table["name"] == "X1"].iloc[0]
     save_json(
         {
@@ -115,7 +115,7 @@ def step4_fwl(cfg: Config, df: pd.DataFrame) -> float:
         },
         "step4_fwl.json",
     )
-    np.save(RESULTS_DIR / "step4_residuals.npy", np.column_stack([e_x1, e_y]))
+    np.save(R_BASELINE / "step4_residuals.npy", np.column_stack([e_x1, e_y]))
     return beta_fwl
 
 
@@ -159,7 +159,7 @@ def step5_partial_t(cfg: Config, df: pd.DataFrame) -> float:
 def step6_compare(cfg: Config, df: pd.DataFrame, step3_table: pd.DataFrame) -> None:
     """步骤六：简单 vs 多元系数对比。"""
     print("[步骤6] 系数对比讨论")
-    beta_simple = pd.read_csv(RESULTS_DIR / "step2_simple.csv")
+    beta_simple = pd.read_csv(R_BASELINE / "step2_simple.csv")
     beta1_simple = float(beta_simple.loc[beta_simple["name"] == "x", "beta"].item())
     beta1_multi = float(step3_table.loc[step3_table["name"] == "X1", "beta"].item())
     se_simple = float(beta_simple.loc[beta_simple["name"] == "x", "se"].item())
