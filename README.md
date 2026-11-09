@@ -44,10 +44,14 @@ pip install -r 作业1/requirements.txt
     ├── README.md         # 作业1说明与进度
     ├── requirements.txt  # Python 依赖
     ├── src/              # 仿真与回归代码
-    ├── data/             # sleep_score.csv 等生成数据
-    ├── figures/          # 图表输出
-    └── report/           # 实验报告
+    ├── data/             # sleep_score.csv（种子生成，入库）
+    ├── tests/            # 数值互验测试
+    ├── results/          # 数值结果落盘（json/csv，入库）
+    ├── figures/          # 图表 PNG（本地生成，不入库）
+    └── report/           # 实验报告（本地撰写，不入库）
 ```
+
+> 报告与图表为本地运行产物（`python src/plotting.py` / `report/实验报告.md`），已加入 `.gitignore`，不在仓库中维护。
 
 ## License
 

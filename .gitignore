@@ -15,6 +15,10 @@ venv/
 *.log
 *.tmp
 
+# 报告与图表：本地产物，不入库
+作业1/report/
+作业1/figures/
+
 # 系统
 Thumbs.db
 .DS_Store
