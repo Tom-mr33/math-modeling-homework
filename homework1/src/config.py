@@ -23,15 +23,19 @@ R_MC = RESULTS_DIR / "mc"                  # ovb.py：M=500 抽样分布与 OVB 
 R_SENSITIVITY = RESULTS_DIR / "sensitivity"  # CH2020 敏感性分析
 R_RACE = RESULTS_DIR / "race"              # 非线性混淆估计器竞赛
 R_CONFORMAL = RESULTS_DIR / "conformal"    # 分裂 conformal 覆盖率
+R_ROBUSTNESS = RESULTS_DIR / "robustness"  # 参数灵敏度 + 推断稳健性检验
 
 
 def ensure_dirs() -> None:
-    for d in (DATA_DIR, REPORT_DIR, R_BASELINE, R_MC, R_SENSITIVITY, R_RACE, R_CONFORMAL):
+    for d in (
+        DATA_DIR, REPORT_DIR, R_BASELINE, R_MC, R_SENSITIVITY,
+        R_RACE, R_CONFORMAL, R_ROBUSTNESS,
+    ):
         d.mkdir(parents=True, exist_ok=True)
 
 
 # 随机流名 -> spawn 索引（顺序即种子派生顺序，新增流只能追加在末尾）
-STREAMS = ["datagen", "mc", "dml", "meta", "conformal", "nonlinear"]
+STREAMS = ["datagen", "mc", "dml", "meta", "conformal", "nonlinear", "paramsens", "robust"]
 
 
 @dataclass(frozen=True)

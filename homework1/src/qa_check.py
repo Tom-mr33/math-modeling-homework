@@ -67,7 +67,19 @@ def main() -> int:
     check("竞赛: DML-RF 偏差 < 线性 OLS 偏差", rf_bias < ols_bias,
           f"OLS |偏差|={ols_bias:.3f} vs DML-RF |偏差|={rf_bias:.3f} (n={race['n']})")
 
-    # 7. 一键复现：main.py 二次运行数值不变
+    # 7. 参数灵敏度：MC 偏误与解析预测一致
+    ps = load("robustness/param_sensitivity.json")
+    devs = [abs(r["bias_simple"] - (r["plim_simple_theory"] - 2)) for r in ps["rows"] if r["sigma"] == 5.0]
+    check("灵敏度: 36 组网格上 MC 偏误 ≡ 解析式", max(devs) < 0.12 and sum(devs) / len(devs) < 0.06,
+          f"最大偏离 {max(devs):.3f}, 平均 {sum(devs)/len(devs):.3f}")
+
+    # 8. 稳健性：异方差下 HC1 覆盖率优于经典 SE
+    rb = load("robustness/inference_robustness.json")["coverage"]
+    hetero = rb["异方差"]
+    check("稳健性: 异方差下 HC1 覆盖率 > 经典 SE", hetero["coverage_hc1"] > hetero["coverage_classic"],
+          f"经典 {hetero['coverage_classic']:.3f} vs HC1 {hetero['coverage_hc1']:.3f}")
+
+    # 9. 一键复现：main.py 二次运行数值不变
     import hashlib
 
     def results_digest() -> str:

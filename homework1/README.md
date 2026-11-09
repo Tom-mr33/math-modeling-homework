@@ -50,9 +50,10 @@
 pip install -r requirements.txt   # econml 可选（缺失自动降级）
 python src/main.py                # 步骤 1–6 流水线 → results/baseline/
 python src/advanced/ovb.py        # MC 仿真 M=500 + OVB 渐近验证 → results/mc/
-python src/advanced/sensitivity.py # CH2020 敏感性分析 → results/sensitivity/
+python src/advanced/robustness.py # 参数灵敏度 + 推断稳健性检验 → results/robustness/
+python src/advanced/sensitivity.py # 隐藏混杂敏感性分析 → results/sensitivity/
 python src/advanced/race.py       # 非线性混淆估计器竞赛 (n=600, M=60) → results/race/
 python src/advanced/conformal.py  # conformal 覆盖率验证 → results/conformal/
-python src/qa_check.py            # 交付验收 (9 项)
+python src/qa_check.py            # 交付验收
 python -m pytest tests/ -v        # 单元测试 (9 项)
 ```
