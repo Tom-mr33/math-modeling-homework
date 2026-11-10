@@ -1,4 +1,4 @@
-"""inference.py —— 与估计解耦的推断层：SE（经典/HC 稳健）、t、p、CI、系数表。
+"""与估计解耦的推断层：SE（经典/HC 稳健）、t、p、CI、系数表。
 
 输入是 OLSResult + 设计矩阵，不关心数据从哪来、系数谁算的。
 """
@@ -88,7 +88,7 @@ def coefficient_table(
 
 
 def simple_regression_summary(y: np.ndarray, x: np.ndarray, ci_level: float = 0.95) -> pd.DataFrame:
-    """一元线性回归 Y ~ x（带截距）的完整摘要，供步骤 2 使用。"""
+    """一元线性回归 Y ~ x（带截距）的系数表，供简单回归分析使用。"""
     from ols import ols_fit  # 延迟导入，保持推断层可独立测试
 
     res = ols_fit(y, x, add_intercept=True)

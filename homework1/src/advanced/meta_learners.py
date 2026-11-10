@@ -1,4 +1,4 @@
-"""advanced/meta_learners.py —— 2020/2021 元学习器：R-learner 与 DR-learner。
+"""2020/2021 元学习器：R-learner 与 DR-learner。
 
 - R-learner（Nie & Wager 2021, Biometrika）：对 Y 与处理同时正交化后，
   解加权损失 min_τ Σ w̃²(ỹ − τ·w̃)²。常数效应时闭式 τ̂ = Σw̃ỹ/Σw̃²；

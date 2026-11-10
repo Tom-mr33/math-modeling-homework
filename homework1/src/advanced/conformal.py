@@ -1,9 +1,9 @@
-"""advanced/conformal.py —— 分裂 conformal 反事实预测区间（Lei & Candès 2021）。
+"""分裂 conformal 反事实预测区间（Lei & Candès 2021）。
 
 方法：每次重复中
   1. 生成训练集(n=60)与独立测试集(n=60)（同一数据生成机制）；
   2. 训练集再分为拟合折(30)/校准折(30)，拟合线性模型并计算校准残差；
-  3. 区间半径 q = 分位数(⌈(n_cal+1)(1−α)⌉/n_cal · |校准残差|)；
+  3. 区间半径 q = 分位数( ceil((n_cal+1)(1-alpha)/n_cal) · |校准残差| )；
   4. 测试集覆盖率统计 → 有限样本边际覆盖保证的经验验证。
 """
 from __future__ import annotations

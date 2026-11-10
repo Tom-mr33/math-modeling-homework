@@ -1,4 +1,4 @@
-"""advanced/dml.py —— Double/Debiased ML (Chernozhukov et al. 2018)。
+"""Double/Debiased ML (Chernozhukov et al. 2018)。
 
 部分线性模型  Y = θ·X1 + g(W) + ε,  X1 = m(W) + v,  W=(X2,X3)：
 K 折交叉拟合估计烦恼项 m̂、ĝ，残差化后 θ̂ = Σw̃ỹ/Σw̃²（Neyman 正交 → √n 渐近正态）。

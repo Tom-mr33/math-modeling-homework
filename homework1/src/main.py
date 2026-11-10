@@ -1,6 +1,6 @@
-"""main.py —— 作业步骤 1–6 流水线。
+"""主流程：六个环节的流水线。
 
-运行（在 作业1/ 目录下）：  python src/main.py
+运行：在项目根目录执行本脚本（无需参数）
 产物：
   data/sleep_score.csv            数据文件
   results/step*.json|csv          报告所需的全部数值
@@ -28,8 +28,8 @@ def save_json(obj: dict, name: str) -> None:
 
 
 def step1_describe(cfg: Config, df: pd.DataFrame) -> None:
-    """步骤一：数据生成 + 描述统计 + 相关矩阵。"""
-    print("[步骤1] 数据生成与描述统计")
+    """数据生成、描述统计与相关矩阵。"""
+    print("[1/6] 数据生成与描述统计")
     desc = df.describe().loc[["mean", "std"]].round(4)
     corr = df.corr().round(4)
     print(desc.to_string())
@@ -48,8 +48,8 @@ def step1_describe(cfg: Config, df: pd.DataFrame) -> None:
 
 
 def step2_simple(cfg: Config, df: pd.DataFrame) -> None:
-    """步骤二：简单回归 Y ~ X1。"""
-    print("[步骤2] 简单回归（不控制）")
+    """简单回归 Y ~ X1。"""
+    print("[2/6] 简单回归（不控制）")
     table = simple_regression_summary(
         df["Y"].to_numpy(), df["X1"].to_numpy(), ci_level=cfg.ci_level
     )
@@ -63,8 +63,8 @@ def step2_simple(cfg: Config, df: pd.DataFrame) -> None:
 
 
 def step3_multiple(cfg: Config, df: pd.DataFrame) -> pd.DataFrame:
-    """步骤三：多元回归 Y ~ X1 + X2 + X3。"""
-    print("[步骤3] 多元回归（控制）")
+    """多元回归 Y ~ X1 + X2 + X3。"""
+    print("[3/6] 多元回归（控制）")
     X = df[["X1", "X2", "X3"]].to_numpy()
     y = df["Y"].to_numpy()
     res = ols_fit(y, X, add_intercept=True)
@@ -92,8 +92,8 @@ def step3_multiple(cfg: Config, df: pd.DataFrame) -> pd.DataFrame:
 
 
 def step4_fwl(cfg: Config, df: pd.DataFrame) -> float:
-    """步骤四：FWL 残差化验证（|Δ| < 1e-8）。"""
-    print("[步骤4] FWL 残差化验证")
+    """残差化等价性验证（|Δ| < 1e-8）。"""
+    print("[4/6] 残差化等价性验证")
     y = df["Y"].to_numpy()
     x1 = df["X1"].to_numpy()
     Z = df[["X2", "X3"]].to_numpy()
@@ -120,8 +120,8 @@ def step4_fwl(cfg: Config, df: pd.DataFrame) -> float:
 
 
 def step5_partial_t(cfg: Config, df: pd.DataFrame) -> float:
-    """步骤五：偏相关与 t 检验等价性（|Δ| < 1e-6）。"""
-    print("[步骤5] 偏相关与 t 检验等价性")
+    """偏相关与检验统计量的等价性（|Δ| < 1e-6）。"""
+    print("[5/6] 偏相关与检验等价性")
     y = df["Y"].to_numpy()
     x1 = df["X1"].to_numpy()
     Z = df[["X2", "X3"]].to_numpy()
@@ -157,8 +157,8 @@ def step5_partial_t(cfg: Config, df: pd.DataFrame) -> float:
 
 
 def step6_compare(cfg: Config, df: pd.DataFrame, step3_table: pd.DataFrame) -> None:
-    """步骤六：简单 vs 多元系数对比。"""
-    print("[步骤6] 系数对比讨论")
+    """简单回归与多元回归的系数对比。"""
+    print("[6/6] 系数对比与讨论")
     beta_simple = pd.read_csv(R_BASELINE / "step2_simple.csv")
     beta1_simple = float(beta_simple.loc[beta_simple["name"] == "x", "beta"].item())
     beta1_multi = float(step3_table.loc[step3_table["name"] == "X1", "beta"].item())
@@ -211,7 +211,7 @@ def main() -> None:
     step4_fwl(cfg, df)
     step5_partial_t(cfg, df)
     step6_compare(cfg, df, t3)
-    print("\n全部步骤完成，数值已落盘 results/")
+    print("\n流程执行完毕，数值结果已落盘")
 
 
 if __name__ == "__main__":

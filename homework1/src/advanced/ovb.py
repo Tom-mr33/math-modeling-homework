@@ -1,4 +1,4 @@
-"""advanced/ovb.py —— 遗漏变量偏误（OVB）解析公式 + Monte Carlo 数值验证。
+"""遗漏变量偏误（OVB）解析公式 + Monte Carlo 数值验证。
 
 理论（方案设计文档 2.1 节）：简单回归同时遗漏 X2 与 X3，故
     plim beta1_simple = beta1 + beta2*Cov(X1,X2)/Var(X1) + beta3*Cov(X1,X3)/Var(X1)

@@ -1,4 +1,4 @@
-"""ols.py —— 纯 numpy 的最小二乘核心：OLS / FWL / 偏相关。
+"""纯 numpy 的最小二乘核心：OLS / FWL / 偏相关。
 
 不依赖 statsmodels（后者仅在 tests 中作互验基准）。
 矩阵记号与方案设计文档第 2 节一致：

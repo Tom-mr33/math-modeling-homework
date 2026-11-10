@@ -1,6 +1,6 @@
-"""qa_check.py —— 交付前验收：方案设计文档第 8 节验收标准的自动检查。
+"""交付前验收：按方案设定的误差标准逐项自动检查。
 
-运行：python src/qa_check.py   →  全项通过输出 PASS，任何一项失败 exit 1。
+运行：在项目根目录执行本脚本；全项通过时输出 PASS，任一项失败则以非零状态退出。
 """
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ def load(rel: str) -> dict:
 
 def main() -> int:
     print("=" * 64)
-    print("作业1 交付前验收（方案设计文档 §8 验收标准）")
+    print("交付前验收（逐项比对预设误差标准）")
     print("=" * 64)
 
     # 1. FWL 数值验证
@@ -79,7 +79,7 @@ def main() -> int:
     check("稳健性: 异方差下 HC1 覆盖率 > 经典 SE", hetero["coverage_hc1"] > hetero["coverage_classic"],
           f"经典 {hetero['coverage_classic']:.3f} vs HC1 {hetero['coverage_hc1']:.3f}")
 
-    # 9. 一键复现：main.py 二次运行数值不变
+    # 一键复现：主流程二次运行数值不变
     import hashlib
 
     def results_digest() -> str:
@@ -94,7 +94,7 @@ def main() -> int:
         cwd=ROOT, capture_output=True, check=True,
     )
     d2 = results_digest()
-    check("一键复现: main.py 重跑数值摘要不变", d1 == d2, f"digest {d1[:12]}… == {d2[:12]}…")
+    check("一键复现: 主流程重跑数值摘要不变", d1 == d2, f"digest {d1[:12]}… == {d2[:12]}…")
 
     # 8. pytest 全部通过
     r = subprocess.run(
@@ -107,7 +107,7 @@ def main() -> int:
 
     n_fail = sum(1 for _, ok, _ in CHECKS if not ok)
     print("=" * 64)
-    print(f"验收结果：{len(CHECKS) - n_fail}/{len(CHECKS)} 通过" + ("，全部 PASS ✓" if n_fail == 0 else "，存在 FAIL ✗"))
+    print(f"验收结果：{len(CHECKS) - n_fail}/{len(CHECKS)} 通过" + ("，全部 PASS" if n_fail == 0 else "，存在 FAIL"))
     print("=" * 64)
     return 1 if n_fail else 0
 

@@ -1,4 +1,4 @@
-"""datagen.py —— 数据生成（作业要求 1 的算法）。
+"""数据生成：按题设设定产生主样本与实验场景。
 
 只负责生成数据并返回 DataFrame，不知道下游谁在消费。
 变量顺序约定：外部协方差矩阵按 (X2, X3, X1) 给出，输出按 (Y, X1, X2, X3) 排列。
@@ -16,11 +16,10 @@ COLUMNS = ["Y", "X1", "X2", "X3"]
 
 
 def generate_dataset(cfg: Config, rng: np.random.Generator) -> pd.DataFrame:
-    """按习题步 2–4 生成一次数据。
+    """按题设设定生成一次数据。
 
-    步 2: (X2, X3, X1)' ~ N3(mu, Sigma)
-    步 3: eps ~ N(0, sigma^2)
-    步 4: Y = 60 + 2*X1 + 1.5*X2 - 1*X3 + eps
+    自变量取自联合正态分布，误差项独立同分布，因变量由线性模型给出；
+    返回含 Y 与三个自变量的数据表。
     """
     X = rng.multivariate_normal(
         mean=np.asarray(cfg.mu), cov=np.asarray(cfg.cov), size=cfg.n

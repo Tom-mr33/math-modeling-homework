@@ -1,4 +1,4 @@
-"""advanced/sensitivity.py —— Cinelli & Hazlett (2020) OVB 敏感性分析。
+"""Cinelli & Hazlett (2020) OVB 敏感性分析。
 
 核心恒等式（本模块自行推导，并在已知混杂 X3 上精确验证）：
 设遗漏模型（不含 U）的 t 统计量为 t0（k0 个参数，自由度 n-k0），
@@ -187,7 +187,7 @@ def run_sensitivity(cfg: Config, df: pd.DataFrame) -> dict:
     v = validation
     print(f"  已知混杂验证: 删 X3 后 t0={v['t0_omitting_x3']:.4f}, "
           f"由偏R²找回 t1={v['t1_predicted']:.4f} vs 实际 {abs(v['t_full_actual']):.4f}, "
-          f"|Δ|={v['abs_diff']:.2e} {'✓' if v['exact'] else '✗'}")
+          f"|Δ|={v['abs_diff']:.2e} {'通过' if v['exact'] else '未通过'}")
     return payload
 
 

@@ -1,4 +1,4 @@
-"""simulation.py —— Monte Carlo 引擎。
+"""Monte Carlo 引擎。
 
 接收任意估计函数 (DataFrame) -> beta1，返回抽样分布样本与摘要。
 OLS / FWL / DML / R-learner 共用同一引擎（方案设计文档解耦原则 2）。
@@ -18,14 +18,14 @@ DataGen = Callable[[np.random.Generator], pd.DataFrame]
 
 
 def beta1_simple(df: pd.DataFrame) -> float:
-    """步骤二估计量：Y ~ X1 的斜率。"""
+    """简单回归估计量：Y ~ X1 的斜率。"""
     x = df["X1"].to_numpy()
     y = df["Y"].to_numpy()
     return float(x @ (y - y.mean()) / (x @ (x - x.mean())))
 
 
 def beta1_multiple(df: pd.DataFrame) -> float:
-    """步骤三估计量：Y ~ X1 + X2 + X3 的 beta1。"""
+    """多元回归估计量：Y ~ X1 + X2 + X3 中 X1 的系数。"""
     res = ols_fit(
         df["Y"].to_numpy(), df[["X1", "X2", "X3"]].to_numpy(), add_intercept=True
     )
